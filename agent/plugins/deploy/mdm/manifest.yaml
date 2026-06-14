@@ -6,7 +6,7 @@ author: thumper-core
 description: >-
   Pushes the agent + honeytoken to managed Macs by upserting a Jamf Pro script
   and a policy scoped to a smart group (recurring check-in trigger). Requires
-  Jamf Pro — the scripts/policies/smart-groups API this uses does not exist in
+  Jamf Pro - the scripts/policies/smart-groups API this uses does not exist in
   Jamf Now, Jamf School, or other MDMs; on those, copy the install command and
   distribute it yourself (paste on the endpoint, or push via that MDM).
 config_schema:

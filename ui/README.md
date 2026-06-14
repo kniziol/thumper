@@ -11,7 +11,7 @@ npm run dev      # http://localhost:5173
 
 ## UI-first / mocked backend
 
-During UI-first development the backend is **mocked in-browser** — there is no
+During UI-first development the backend is **mocked in-browser** - there is no
 server required. All data lives in [`src/api/mock.ts`](src/api/mock.ts), which
 implements the same method signatures the real API will expose.
 
@@ -32,13 +32,13 @@ When `server/` (FastAPI) exists:
 3. The Vite dev proxy already forwards `/api` → `http://localhost:8000`
    (see [`vite.config.ts`](vite.config.ts)).
 
-No page/component changes required — they only import from `src/api`.
+No page/component changes required - they only import from `src/api`.
 
 ## Pages
 
-- **Dashboard** — stats, live alert banner, recent triggers, deployed tripwires.
-- **Tripwires** — list + per-row deploy action.
-- **Create tripwire** — 3-step: pick credential type → name & path → token preview.
-- **Integrations** — deploy & alert plugins. Config forms are **rendered
+- **Dashboard** - stats, live alert banner, recent triggers, deployed tripwires.
+- **Tripwires** - list + per-row deploy action.
+- **Create tripwire** - 3-step: pick credential type → name & path → token preview.
+- **Integrations** - deploy & alert plugins. Config forms are **rendered
   dynamically from each plugin's `config_schema`** (manifest), so new plugins
   get a UI with zero frontend changes.

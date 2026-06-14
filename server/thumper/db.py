@@ -1,6 +1,6 @@
 """Database engine, ORM models, and session management.
 
-Supports SQLite (default), PostgreSQL, and MySQL — selected by the THUMPER_DB
+Supports SQLite (default), PostgreSQL, and MySQL - selected by the THUMPER_DB
 env var (a SQLAlchemy URL). SQLite-specific PRAGMAs are applied via an event
 listener; everything else is engine-agnostic.
 """

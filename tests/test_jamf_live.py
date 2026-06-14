@@ -2,7 +2,7 @@
 
 Skipped unless the JAMF_* env vars are set, so it never runs in the normal
 offline suite. Point it at any Jamf Pro tenant (yours, a trial, or a CI secret)
-to verify the actual contract the mocked tests can only assume — OAuth, the
+to verify the actual contract the mocked tests can only assume - OAuth, the
 Jamf Pro + Classic API call shapes, and idempotent upsert:
 
     JAMF_BASE_URL=https://<tenant>.jamfcloud.com \

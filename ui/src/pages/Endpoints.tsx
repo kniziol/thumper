@@ -42,9 +42,9 @@ export default function Endpoints() {
                 {endpoints.map((e) => (
                   <tr key={e.id} className="clickable-row" onClick={() => nav(`/endpoints/${e.id}`)}>
                     <td>{e.hostname}</td>
-                    <td className="muted">{e.platform ?? "—"}</td>
+                    <td className="muted">{e.platform ?? "-"}</td>
                     <td className="muted">{timeAgo(e.enrolled_at)}</td>
-                    <td className="muted">{e.last_seen ? timeAgo(e.last_seen) : "—"}</td>
+                    <td className="muted">{e.last_seen ? timeAgo(e.last_seen) : "-"}</td>
                     <td>{e.deployment_count}</td>
                     <td className={e.triggered_count > 0 ? "danger-text" : ""}>
                       {e.triggered_count}

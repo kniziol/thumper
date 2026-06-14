@@ -5,6 +5,6 @@
 3. For UI work: `cd ui && npm install && npm run dev`.
 4. For plugins, see [docs/plugins.md](docs/plugins.md).
 
-Report security vulnerabilities privately — see [SECURITY.md](SECURITY.md).
+Report security vulnerabilities privately - see [SECURITY.md](SECURITY.md).
 
 By contributing, you agree that your contributions will be licensed under the [Apache 2.0 License](LICENSE).

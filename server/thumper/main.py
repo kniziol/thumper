@@ -47,7 +47,7 @@ def healthz():
 @app.exception_handler(StarletteHTTPException)
 async def spa_fallback_handler(request: Request, exc: StarletteHTTPException):
     """SPA fallback: serve index.html for unknown UI paths so client-side routes
-    (e.g. refreshing /tripwires) load and React handles routing — including its
+    (e.g. refreshing /tripwires) load and React handles routing - including its
     own catch-all 404. API/health 404s stay JSON.
     """
     path = request.url.path
@@ -59,7 +59,7 @@ async def spa_fallback_handler(request: Request, exc: StarletteHTTPException):
     ):
         return HTMLResponse(index.read_text())
     # Preserve any headers the original error carried (e.g. Allow on a 405,
-    # WWW-Authenticate on a 401) — this handler overrides the default one, which
+    # WWW-Authenticate on a 401) - this handler overrides the default one, which
     # would otherwise have set them.
     return JSONResponse({"detail": exc.detail}, status_code=exc.status_code,
                         headers=getattr(exc, "headers", None))

@@ -18,7 +18,7 @@ branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
 # The baseline created these FKs unnamed; a naming convention lets batch mode
-# (SQLite has no ALTER for FKs — it rebuilds the table) address them by name.
+# (SQLite has no ALTER for FKs - it rebuilds the table) address them by name.
 _NAMING = {"fk": "fk_%(table_name)s_%(column_0_name)s"}
 
 

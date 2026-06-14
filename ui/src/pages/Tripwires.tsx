@@ -113,7 +113,7 @@ export default function Tripwires() {
                 {install.tripwire_ids.length === 1 ? "" : "s"}
               </div>
               <p className="muted" style={{ marginTop: 0 }}>
-                Run it on the machines you choose — paste it on a box, or push it via your MDM /
+                Run it on the machines you choose - paste it on a box, or push it via your MDM /
                 SSH. One agent self-enrolls and plants + watches all selected tripwires.{" "}
                 <code>sudo</code> is required (macOS <code>fs_usage</code>).
               </p>
@@ -197,7 +197,7 @@ export default function Tripwires() {
         <Modal onClose={() => { setDeleting(null); setActionErr(null); }}>
           <div className="card-head"><h2>Delete tripwire</h2></div>
           <p className="modal-intro">
-            This removes <strong>{deleting.name}</strong> from all endpoints — the planted bait
+            This removes <strong>{deleting.name}</strong> from all endpoints - the planted bait
             will be unplanted on the next agent sync. Alert history is preserved.
           </p>
           <div className="field">

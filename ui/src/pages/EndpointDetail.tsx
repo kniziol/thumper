@@ -71,7 +71,7 @@ export default function EndpointDetail() {
             <EndpointBadge status={ep.status} />
             <span className="muted">{ep.platform ?? "unknown platform"}</span>
             <span className="muted">enrolled {timeAgo(ep.enrolled_at)}</span>
-            <span className="muted">last seen {ep.last_seen ? timeAgo(ep.last_seen) : "—"}</span>
+            <span className="muted">last seen {ep.last_seen ? timeAgo(ep.last_seen) : "-"}</span>
           </div>
         </div>
 
@@ -138,7 +138,7 @@ export default function EndpointDetail() {
                     </td>
                     <td className="path">{d.id}</td>
                     <td className="muted">{timeAgo(d.created_at)}</td>
-                    <td className="muted">{d.last_triggered ? timeAgo(d.last_triggered) : "—"}</td>
+                    <td className="muted">{d.last_triggered ? timeAgo(d.last_triggered) : "-"}</td>
                     <td><DeployBadge state={d.state} triggered={d.triggered_count} /></td>
                     <td>
                       <button

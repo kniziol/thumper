@@ -1,4 +1,4 @@
-"""GET /api/install?tripwire=A&tripwire=B — build one install command for a set
+"""GET /api/install?tripwire=A&tripwire=B - build one install command for a set
 of tripwires (SP1 of #34). The single-tripwire path (build_install, used by
 TripwireDetail + the deploy plugins) must stay byte-for-byte unchanged.
 """

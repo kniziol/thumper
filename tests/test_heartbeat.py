@@ -54,7 +54,7 @@ def test_heartbeat_does_not_change_deployment_state(client_db):
 
     assert resp.status_code == 200
     db.expire_all()
-    # heartbeat is liveness only — planted-state now comes from the agent's report
+    # heartbeat is liveness only - planted-state now comes from the agent's report
     assert db.query(Deployment).filter(Deployment.id == "dp_1").first().state == "pending"
 
 

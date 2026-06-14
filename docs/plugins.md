@@ -2,7 +2,7 @@
 
 Plugins are how Thumper stays a *tool, not a solution*: deployment and alerting
 are pluggable so an org wires Thumper into whatever it already runs. Adding one
-is intentionally trivial — **drop a directory in, get a UI for free.**
+is intentionally trivial - **drop a directory in, get a UI for free.**
 
 A plugin is a directory under `plugins/{deploy,alert}/<name>/` with two files:
 
@@ -12,7 +12,7 @@ plugins/alert/slack/
   plugin.py       # a class named `Plugin`
 ```
 
-No registration, no imports to edit — the loader discovers it on startup.
+No registration, no imports to edit - the loader discovers it on startup.
 
 ## manifest.yaml
 
@@ -52,7 +52,7 @@ class Plugin(AlertPlugin):
             raise PluginError("slack: webhook_url is required")
         text = (f":rotating_light: Honeytoken read on *{event['endpoint_hostname']}* "
                 f"by `{event.get('process')}` (user {event.get('os_user')}) "
-                f"— {event['tripwire_name']} at {event.get('accessed_path')}")
+                f"- {event['tripwire_name']} at {event.get('accessed_path')}")
         httpx.post(url, json={"text": text}, timeout=10).raise_for_status()
 ```
 
@@ -65,7 +65,7 @@ The `event` dict the router passes to `alert()`:
 | `accessed_path`, `process`, `pid`, `os_user`, `event_type` | enrichment from the endpoint monitor (fs_usage) |
 | `timestamp`, `triggered_by` | when + compact summary |
 
-Raise `PluginError` (or any exception) on failure — the router logs it and keeps
+Raise `PluginError` (or any exception) on failure - the router logs it and keeps
 going; one bad plugin never drops the alert.
 
 ### Deploy plugin
@@ -83,7 +83,7 @@ class Plugin(DeployPlugin):
 
 `AgentInstall` carries `tripwire_id`, `server_url`, `enroll_token`, and the
 ready-to-run `command`. A deploy plugin's only job is to **run that command** on
-the chosen machines — it never handles token content or secrets.
+the chosen machines - it never handles token content or secrets.
 
 ## Test it
 

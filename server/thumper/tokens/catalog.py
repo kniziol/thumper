@@ -2,7 +2,7 @@
 attackers (incl. the Shai-Hulud npm worm) are known to scan for them.
 
 `default_path` is the top recommendation; `suggested_paths` are other realistic,
-attacker-inspected locations. Operators are NOT limited to these — the UI lets
+attacker-inspected locations. Operators are NOT limited to these - the UI lets
 them type any path. These are opinionated recommendations, nothing more.
 
 Refs: CISA advisory 2025/09/23, Unit 42, Microsoft "Shai-Hulud 2.0", Akamai.
@@ -30,7 +30,7 @@ TOKEN_TYPES = [
             "~/.config/gh/hosts.yml",
             "~/.netrc",
             "~/.git-credentials",
-            "~/.npmrc",            # npm auth token — Shai-Hulud's primary target
+            "~/.npmrc",            # npm auth token - Shai-Hulud's primary target
             "~/.env",
         ],
         "description": "Fake fine-grained GitHub personal access token. Shai-Hulud "

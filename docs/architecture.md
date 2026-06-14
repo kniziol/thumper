@@ -18,7 +18,7 @@ Endpoint  ◀── self-enroll (shared enroll token) ────────�
 ```
 
 - **Tripwire** is a *definition* (a canary recipe). It lives on no machine.
-- Deploying it mints one **Deployment** per endpoint — each with its **own**
+- Deploying it mints one **Deployment** per endpoint - each with its **own**
   bait content and **own** HMAC secret. So a leak on one box can't forge another's
   triggers, and (later) a managed/BYO credential can be attributed to one box.
 - The **org's MDM is the control plane** for *which* machines are in scope.
@@ -37,9 +37,9 @@ FastAPI + stdlib `sqlite3` (no ORM).
 
 | Module | Role |
 | --- | --- |
-| `api/routes.py` | All endpoints — JSON UI contract + plain-text agent protocol (enroll/pull/content + `/trigger`). |
+| `api/routes.py` | All endpoints - JSON UI contract + plain-text agent protocol (enroll/pull/content + `/trigger`). |
 | `db.py` / `store.py` | SQLite schema + repository functions (the **DB seam**, below). |
-| `models.py` | Pydantic schemas — mirror `ui/src/api/types.ts`. |
+| `models.py` | Pydantic schemas - mirror `ui/src/api/types.ts`. |
 | `tokens/` | Honeytoken generators + the recommended-path catalog. |
 | `plugins/` | Framework: `base.py` (contract), `loader.py` (discovery). |
 | `services/` | `deploy` (build/distribute install), `alerting` (fan-out), `signing` (HMAC), `content` (render bait per source), `integrations`. |
@@ -48,10 +48,10 @@ FastAPI + stdlib `sqlite3` (no ORM).
 Delivered by a deploy plugin. Pure **Bash** (`curl` + `openssl`, POSIX `sh`) so
 endpoints need no Python runtime. Enrolls, pulls its unique instances, plants
 them, and watches. Read detection:
-- **macOS**: `fs_usage` — real open/read events **with process + user**,
+- **macOS**: `fs_usage` - real open/read events **with process + user**,
   pre-filtered with `grep` to just the bait paths (so the firehose is trimmed at
   the source, not in-process).
-- **else**: `st_atime` poll fallback — best-effort only (many systems update
+- **else**: `st_atime` poll fallback - best-effort only (many systems update
   atime lazily or not at all, so it can miss reads). `fs_usage` is the real sensor.
 
 The agent never parses JSON: the agent-facing API speaks a plain-text protocol
@@ -73,7 +73,7 @@ The callback is reachable by every endpoint, so it's effectively public.
 
 ### macOS read-detection
 `fs_usage` is the answer (Linux `auditd`/inotify `IN_ACCESS` is the follow-up).
-It requires root — the agent runs as root under MDM. It also yields the process
+It requires root - the agent runs as root under MDM. It also yields the process
 and (via `ps`) the user, which enrich the alert. **Prototype on a real Mac before
 locking the monitor.**
 
@@ -87,7 +87,7 @@ SQLite ships in the monolith with zero setup. Two seams, by how far you need to 
 - **Different file/location**: set `THUMPER_DB=/path/to/thumper.db`.
 - **Different engine (Postgres/MySQL/…)**: all SQL is isolated in `db.py`
   (`connect`, schema) and `store.py` (every query). Reimplement those two modules
-  against your engine — nothing else in the app writes SQL. The API/services deal
+  against your engine - nothing else in the app writes SQL. The API/services deal
   only in plain rows returned by `store.py`.
 
 ## Plugins

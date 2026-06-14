@@ -18,7 +18,7 @@ from pydantic import BaseModel
 
 class AgentInstall(BaseModel):
     """What a deploy plugin distributes to endpoints. A deploy plugin's job is to
-    get the agent RUNNING on the chosen machines — it runs `command`, which makes
+    get the agent RUNNING on the chosen machines - it runs `command`, which makes
     each machine self-enroll and pull its own unique token instance. Per-token
     content + HMAC secret are minted server-side at enroll time and never travel
     in the install (so the same command can fan out to a whole fleet safely)."""
@@ -46,7 +46,7 @@ class DeployPlugin(ABC):
     @abstractmethod
     def deploy(self, install: AgentInstall, targets: list[str]) -> DeployResult:
         """Run `install.command` on `targets` (or on machines derived from the
-        plugin's own config — an MDM smart group, an SSH host list)."""
+        plugin's own config - an MDM smart group, an SSH host list)."""
 
     def status(self, targets: list[str]) -> dict:
         """Optional: report current deployment status. Default: nothing known."""
@@ -72,5 +72,5 @@ class AlertPlugin(ABC):
             "event_type": "test",
             "tripwire_name": "thumper-connection-test",
             "endpoint_hostname": "thumper-server",
-            "message": "Thumper test event — your integration is wired up correctly.",
+            "message": "Thumper test event - your integration is wired up correctly.",
         })

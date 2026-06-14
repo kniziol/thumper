@@ -1,4 +1,4 @@
-"""GET /api/settings — read-only server configuration."""
+"""GET /api/settings - read-only server configuration."""
 from unittest.mock import patch, MagicMock
 
 

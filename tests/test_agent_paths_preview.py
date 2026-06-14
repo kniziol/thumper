@@ -1,10 +1,10 @@
-"""POST /api/agent/tripwire-paths — pre-enroll bait-path preview.
+"""POST /api/agent/tripwire-paths - pre-enroll bait-path preview.
 
 The agent fetches its tripwires' bait paths BEFORE enrolling so a path conflict
 can abort the install without ever creating an endpoint (issue #29: a refused
 install must leave no ghost endpoint in the dashboard). The endpoint returns the
 paths as plain text (one per line) and is gated by the enroll token, like
-/enroll — but it creates nothing.
+/enroll - but it creates nothing.
 """
 from thumper import store
 from thumper.db import Tripwire

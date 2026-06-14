@@ -7,7 +7,7 @@ import { Topbar } from "../components/ui.tsx";
 const SOURCES: { key: CredentialSource; label: string; desc: string; soon?: boolean }[] = [
   { key: "template", label: "Generated template", desc: "A realistic fake we generate. Alerts on read." },
   { key: "custom", label: "Bring your own", desc: "Paste a real-but-revoked credential.", soon: true },
-  { key: "managed", label: "Managed canary", desc: "Monitored real credential — detects use off the box.", soon: true },
+  { key: "managed", label: "Managed canary", desc: "Monitored real credential - detects use off the box.", soon: true },
 ];
 
 export default function CreateTripwire() {
@@ -115,7 +115,7 @@ export default function CreateTripwire() {
             <input
               type="text"
               value={name}
-              placeholder="e.g. AWS prod creds — engineering laptops"
+              placeholder="e.g. AWS prod creds - engineering laptops"
               onChange={(e) => setName(e.target.value)}
             />
           </div>
@@ -129,9 +129,9 @@ export default function CreateTripwire() {
             />
             <div className="help">
               {isRecommended ? (
-                <span className="rec-yes">★ Recommended location — attackers commonly inspect this path.</span>
+                <span className="rec-yes">★ Recommended location - attackers commonly inspect this path.</span>
               ) : (
-                <span>Free text — any absolute, relative, or <code>~</code> path works.</span>
+                <span>Free text - any absolute, relative, or <code>~</code> path works.</span>
               )}
             </div>
             {info && info.suggested_paths.length > 0 && (

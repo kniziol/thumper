@@ -64,7 +64,7 @@ export function EndpointBadge({ status }: { status: EndpointStatus }) {
   );
 }
 
-/** Monospace block with a copy button — used for the install command. */
+/** Monospace block with a copy button - used for the install command. */
 export function CopyField({ value }: { value: string }) {
   const [copied, setCopied] = useState(false);
   return (

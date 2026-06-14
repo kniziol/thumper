@@ -4,7 +4,7 @@ display_name: "SSH (direct)"
 version: "0.1.0"
 author: thumper-core
 description: >-
-  Drops the honeytoken onto hosts you can reach directly over SSH — good for
+  Drops the honeytoken onto hosts you can reach directly over SSH - good for
   servers and bastions. Uses your local ssh client and its key/agent auth.
 config_schema:
   - key: hosts

@@ -1,7 +1,7 @@
 """An in-process fake Jamf Pro server for integration-testing the real plugin
 over real HTTP.
 
-This is NOT a Jamf emulator — it's a *contract fake*. It implements only the
+This is NOT a Jamf emulator - it's a *contract fake*. It implements only the
 endpoints `JamfClient` calls, and returns the response shapes that were verified
 against Jamf's documented API (Jamf Pro API for scripts/OAuth, Classic API XML
 for policies + smart groups). It's as honest as those documented shapes, so it
@@ -28,7 +28,7 @@ def create_fake_jamf(*, client_id="cid", client_secret="secret",
     """Build a fake Jamf Pro FastAPI app.
 
     seed_groups: {name: computers} where `computers` is a list (members) or None
-                 (empty group — exercises the `computers: null` path).
+                 (empty group - exercises the `computers: null` path).
     filler_scripts: number of unrelated scripts to pre-create, to force the
                     script lookup across more than one page.
     """
@@ -120,7 +120,7 @@ def create_fake_jamf(*, client_id="cid", client_secret="secret",
         g = store["groups"].get(group_id)
         if not g:
             return Response(status_code=404)
-        # `computers` is intentionally passed through as-is — may be None.
+        # `computers` is intentionally passed through as-is - may be None.
         return {"computer_group": {"id": g["id"], "name": g["name"],
                                    "computers": g["computers"]}}
 

@@ -1,23 +1,23 @@
 #!/bin/sh
 # Thumper endpoint agent (Bash/POSIX sh, prototype).
 #
-# Pure shell so endpoints need NO Python runtime — only `curl` and `openssl`
+# Pure shell so endpoints need NO Python runtime - only `curl` and `openssl`
 # (both ubiquitous; macOS/Linux ship them). The server's agent-facing API speaks
 # a plain-text protocol (key=value + tab-separated lines) precisely so this agent
 # never has to parse JSON.
 #
 # Lifecycle:
-#   1. ENROLL  — register this machine (POST /api/enroll) with the shared enroll
+#   1. ENROLL  - register this machine (POST /api/enroll) with the shared enroll
 #                token baked into the install command. Saves a per-endpoint token.
-#   2. PULL    — GET /api/agent/deployments: this endpoint's OWN instances, one
+#   2. PULL    - GET /api/agent/deployments: this endpoint's OWN instances, one
 #                tab-separated record each (id, path, hmac_secret, content URL,
 #                callback URL). The HMAC secret lives HERE, never in the bait file.
-#   3. PLANT   — fetch each instance's bait content and write it to its path.
-#   4. WATCH   — detect reads and POST an HMAC-signed, enriched callback per
+#   3. PLANT   - fetch each instance's bait content and write it to its path.
+#   4. WATCH   - detect reads and POST an HMAC-signed, enriched callback per
 #                deployment. A read is the signal.
 #
 # Root is NOT needed to plant a user-space bait (~/.aws, ~/.config, ~/.ssh) or for
-# the attacker to read it — Shai-Hulud runs as the dev user, who owns the file.
+# the attacker to read it - Shai-Hulud runs as the dev user, who owns the file.
 # Root is only needed to (a) plant in a system path like /etc/ssh, or (b) run the
 # macOS fs_usage sensor below.
 #
@@ -25,7 +25,7 @@
 #   • macOS : `fs_usage`, pre-filtered with grep to ONLY our bait paths before
 #             anything else touches it (so we don't process the whole firehose).
 #             Yields the offending process + (looked-up) user. Needs root.
-#   • else  : st_atime poll fallback. NOTE: best-effort only — many systems
+#   • else  : st_atime poll fallback. NOTE: best-effort only - many systems
 #             (notably macOS with relatime-style behavior) update atime lazily or
 #             not at all, so this can miss reads. fs_usage is the real sensor.
 #
@@ -42,7 +42,7 @@ READ_OPS="open read RdData pread readlink mmap"
 NOISE_PROCS="fs_usage sh bash thumper_agent curl mds mds_stores mdworker mdworker_shared mdbulkimport mdflagwriter mdsync fseventsd backupd tccd syspolicyd XProtect XprotectService quicklookd Spotlight mdiagnosticd"
 DEBOUNCE_SECS=3
 REPLANT_MAX=3   # max re-plant attempts per deployment before giving up (verify pass)
-# After a callback is rejected with 401 (server no longer knows this deployment —
+# After a callback is rejected with 401 (server no longer knows this deployment -
 # DB reset/redeploy, or the tripwire was deleted), re-enroll to pick up fresh
 # credentials. Rate-limited so a persistent 401 can't turn every read into an
 # enroll storm.
@@ -62,7 +62,7 @@ state_get() {  # state_get <file> <key>
 # ── planted-bait manifest ─────────────────────────────────────────────────────
 # A flat list (one absolute path per line) of files THIS agent planted, kept next
 # to the state file. It lets plant() distinguish bait it owns (safe to refresh)
-# from a pre-existing real credential (never touch) — so the overwrite guard can
+# from a pre-existing real credential (never touch) - so the overwrite guard can
 # still let us rotate our own bait on later runs.
 planted_by_us() {  # planted_by_us <path>  -> 0 if we recorded planting it
     [ -f "${MANIFEST_FILE:-}" ] || return 1
@@ -73,7 +73,7 @@ record_planted() {  # record_planted <path>
     mkdir -p "$(dirname "$MANIFEST_FILE")"
     planted_by_us "$1" || printf '%s\n' "$1" >> "$MANIFEST_FILE"
 }
-forget_planted() {  # forget_planted <path> — drop a path from the manifest
+forget_planted() {  # forget_planted <path> - drop a path from the manifest
     [ -f "${MANIFEST_FILE:-}" ] || return 0
     tmp="$MANIFEST_FILE.tmp.$$"
     grep -vxF "$1" "$MANIFEST_FILE" > "$tmp" 2>/dev/null || true  # 1 == now empty
@@ -82,7 +82,7 @@ forget_planted() {  # forget_planted <path> — drop a path from the manifest
 
 # ── singleton lock ────────────────────────────────────────────────────────────
 # Only one agent per install location (keyed to the state-file dir), so a re-run
-# of the install command — MDM re-push, reboot, manual paste — doesn't stack
+# of the install command - MDM re-push, reboot, manual paste - doesn't stack
 # duplicate watchers all firing the same read. An atomic `mkdir` is the gate; the
 # holder is respected only if its PID is alive AND is a thumper_agent process
 # (guards PID reuse after a reboot). A dead/foreign lock is reclaimed, so a
@@ -91,7 +91,7 @@ LOCK_DIR=""
 
 # Is the current lock held by a live thumper_agent? Sets $oldpid as a side effect.
 # The winner does `mkdir` then writes `pid` non-atomically, so a momentarily empty
-# pid means "holder still initializing", not "abandoned" — re-read once after a
+# pid means "holder still initializing", not "abandoned" - re-read once after a
 # short pause before treating the lock as stale (closes the mkdir/pid-write race).
 lock_holder_alive() {
     oldpid=$(cat "$LOCK_DIR/pid" 2>/dev/null || true)
@@ -233,14 +233,14 @@ EOF
 
 # Fetch this install's bait paths from the server WITHOUT enrolling, then abort
 # the whole install if any path is already occupied by a file we didn't plant.
-# Fail closed: a path conflict (issue #29) — or an unreachable/uncooperative
-# server — refuses the install rather than risk clobbering a real credential.
+# Fail closed: a path conflict (issue #29) - or an unreachable/uncooperative
+# server - refuses the install rather than risk clobbering a real credential.
 # Returns 0 only when every path is clear (safe to enroll + plant).
 preflight_paths() {
     paths=$(curl -fsS -X POST "$SERVER/api/agent/tripwire-paths" \
         --data-urlencode "enroll_token=$ENROLL_TOKEN" \
         --data-urlencode "tripwire_ids=$TRIPWIRES") || {
-        err "preflight: could not fetch tripwire paths from server — not enrolling"; return 1; }
+        err "preflight: could not fetch tripwire paths from server - not enrolling"; return 1; }
 
     conflicts=""
     # here-doc (not a pipe) so the conflicts var survives the loop's subshell.
@@ -276,12 +276,12 @@ plant() {  # plant <i>
 
     # NEVER clobber a file we didn't plant. At a realistic bait path
     # (~/.aws/credentials, ~/.ssh/id_rsa, …) a pre-existing file is almost
-    # certainly a REAL secret, and `curl -o` would truncate it — silent data
+    # certainly a REAL secret, and `curl -o` would truncate it - silent data
     # loss. -e follows symlinks; -L also catches a symlink itself (curl -o would
     # write THROUGH it and trash the link target). --force opts out, for
     # dedicated honeypot boxes with no real creds.
     if { [ -e "$path" ] || [ -L "$path" ]; } && ! planted_by_us "$path" && [ "$FORCE" != 1 ]; then
-        err "refusing to overwrite existing $path (not planted by thumper) — skipping $id; pass --force to override"
+        err "refusing to overwrite existing $path (not planted by thumper) - skipping $id; pass --force to override"
         report_plant "$id" failed
         return 1
     fi
@@ -312,7 +312,7 @@ resync() {
         return 1
     fi
     LAST_RESYNC=$now
-    log "callback rejected (401) — re-enrolling to refresh credentials"
+    log "callback rejected (401) - re-enrolling to refresh credentials"
     do_enroll || { err "re-enroll failed"; return 1; }
     pull_deployments || { err "re-pull after re-enroll failed"; return 1; }
     return 0
@@ -347,7 +347,7 @@ _fire() {
                 # tripwire+path. If the path itself changed, the fs_usage grep
                 # filter won't see future reads until the watcher restarts.
                 new_idx=$(dep_index_for_line "$accessed_path") || {
-                    err "callback REJECTED — path not deployed after re-enroll ($summary)"; return 0; }
+                    err "callback REJECTED - path not deployed after re-enroll ($summary)"; return 0; }
                 _fire "$new_idx" "$event_type" "$process" "$pid" "$os_user" "$accessed_path"
             else
                 err "callback REJECTED (401) ($summary)"
@@ -387,7 +387,7 @@ is_noise()   { for n in $NOISE_PROCS; do [ "$n" = "$1" ] && return 0; done; retu
 
 watch_fs_usage() {
     # Build a grep filter of just our bait paths so fs_usage's firehose is trimmed
-    # at the source — the shell loop only ever sees lines about our files.
+    # at the source - the shell loop only ever sees lines about our files.
     set --
     i=1
     while [ "$i" -le "$DEP_COUNT" ]; do
@@ -422,7 +422,7 @@ watch_fs_usage() {
 }
 
 watch_atime() {
-    log "fs_usage unavailable — atime poll every ${POLL}s (best-effort; may miss reads, no process/user)"
+    log "fs_usage unavailable - atime poll every ${POLL}s (best-effort; may miss reads, no process/user)"
     i=1
     while [ "$i" -le "$DEP_COUNT" ]; do
         eval "p=\$dep_path_$i"
@@ -448,7 +448,7 @@ watch_atime() {
 # A running agent re-pulls its deployment set every --sync-interval and applies
 # the diff (plant added, remove dropped) WITHOUT a restart, so a tripwire added
 # to or removed from this endpoint takes effect on a live box. The watcher is
-# restarted ONLY when the set actually changed — never periodically — so we never
+# restarted ONLY when the set actually changed - never periodically - so we never
 # blind ourselves between cycles.
 WATCH_PID=""
 
@@ -471,7 +471,7 @@ plant_all() {  # plant every current deployment; sets `planted`
 
 start_watcher() {  # launch the right sensor in the background; set WATCH_PID
     # fs_usage needs root, but watch_fs_usage runs it under `sudo -n` when we are
-    # not root — so a non-root Mac with passwordless sudo still gets the real
+    # not root - so a non-root Mac with passwordless sudo still gets the real
     # sensor. Probe that capability instead of gating on `id -u = 0`, which would
     # silently downgrade such hosts to the lossy atime poll.
     if [ "$(platform)" = "darwin" ] && command -v fs_usage >/dev/null 2>&1 \
@@ -515,7 +515,7 @@ reconcile() {
                     rm -f "$opath" && log "removed bait $oid -> $opath"
                     forget_planted "$opath"
                 else
-                    err "not removing $opath ($oid) — not planted by thumper"
+                    err "not removing $opath ($oid) - not planted by thumper"
                 fi ;;
         esac
     done
@@ -535,7 +535,7 @@ reconcile() {
 # Re-stat each current deployment; a missing bait (deleted/tampered, or a plant
 # that never landed) is reported failed every cycle and re-planted up to
 # REPLANT_MAX times OVER THE AGENT'S LIFETIME (counter keyed by deployment id so
-# it survives reconcile reshuffles; never reset — a restart zeroes it). After the
+# it survives reconcile reshuffles; never reset - a restart zeroes it). After the
 # cap we keep reporting failed but stop re-planting, so a path that keeps failing
 # (or an attacker repeatedly deleting bait) can never turn this into a hot loop.
 verify_planted() {
@@ -543,7 +543,7 @@ verify_planted() {
     while [ "$i" -le "$DEP_COUNT" ]; do
         eval "p=\$dep_path_$i vid=\$dep_id_$i"
         if [ -L "$p" ]; then
-            # A symlink where our (regular-file) bait should be is tampering — an
+            # A symlink where our (regular-file) bait should be is tampering - an
             # attacker could point it at a sensitive file. NEVER treat it as planted
             # and never re-plant through it (curl -o would write the target); report
             # failed so the lost coverage is visible.
@@ -567,7 +567,7 @@ verify_planted() {
                     log "re-plant failed for $vid ($((a + 1))/$REPLANT_MAX)"
                 fi
             else
-                log "bait missing at $p — giving up after $REPLANT_MAX attempts"
+                log "bait missing at $p - giving up after $REPLANT_MAX attempts"
             fi
         fi
         i=$((i + 1))
@@ -622,7 +622,7 @@ run() {
 
     start_watcher
 
-    # No live sync: behave as before — block on the watcher.
+    # No live sync: behave as before - block on the watcher.
     if ! [ "$SYNC_INTERVAL" -gt 0 ] 2>/dev/null; then
         wait "$WATCH_PID" || true
         return 0
@@ -633,7 +633,7 @@ run() {
         sleep "$SYNC_INTERVAL"
         _old=$(snapshot | sort)
         # A failed pull is often a dead token (DB reset / re-enroll needed), which
-        # would otherwise retry forever — recover via resync (re-enroll, rate-
+        # would otherwise retry forever - recover via resync (re-enroll, rate-
         # limited). On success FALL THROUGH so the refreshed set is reconciled;
         # only skip the cycle if recovery itself fails.
         if ! pull_deployments && ! resync; then
@@ -643,7 +643,7 @@ run() {
         # a real change and must not trigger a needless watcher restart.
         _new=$(snapshot | sort)
         if [ "$_old" != "$_new" ]; then
-            log "deployment set changed — reconciling"
+            log "deployment set changed - reconciling"
             stop_watcher
             reconcile "$_old"
             start_watcher

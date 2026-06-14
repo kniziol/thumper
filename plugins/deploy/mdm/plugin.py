@@ -1,14 +1,14 @@
-"""MDM deploy plugin — Jamf Pro.
+"""MDM deploy plugin - Jamf Pro.
 
 Gets the Thumper agent RUNNING on managed Macs by upserting a Jamf script and a
 policy (scoped to a smart group, recurring check-in trigger) that runs it. Each
-device self-enrolls and pulls its own unique token instance — nothing secret
+device self-enrolls and pulls its own unique token instance - nothing secret
 travels in the policy. Real coverage truth is the Endpoints page (enroll
 callbacks), not this plugin.
 
 Jamf Pro only: this drives Jamf Pro's scripts + policies + smart-groups APIs
 (Classic + Jamf Pro API). Jamf Now, Jamf School, and other MDMs do not expose
-that surface — there, copy the install command and distribute it yourself
+that surface - there, copy the install command and distribute it yourself
 (paste on the endpoint, or push via that MDM).
 """
 from thumper.plugins.base import AgentInstall, DeployPlugin, DeployResult, PluginError
@@ -21,7 +21,7 @@ _ROOT_SUFFIX = "sh /tmp/thumper-install.sh"
 
 
 def _to_root(command: str) -> str:
-    """Jamf script policies run as root, non-interactively — drop the `sudo` the
+    """Jamf script policies run as root, non-interactively - drop the `sudo` the
     human-paste install command carries. Asserted replace: fail loudly if the
     command shape changes rather than ship a broken policy."""
     needle = f"sudo {_ROOT_SUFFIX}"

@@ -1,4 +1,4 @@
-"""POST /api/integrations/{plugin}/test — the connection-test endpoint."""
+"""POST /api/integrations/{plugin}/test - the connection-test endpoint."""
 from thumper import store
 
 

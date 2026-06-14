@@ -1,7 +1,7 @@
 """Discover and instantiate plugins from the filesystem.
 
 Drop a directory with a manifest.yaml + plugin.py into plugins/{deploy,alert}/
-and it shows up — no registration code, no imports to edit.
+and it shows up - no registration code, no imports to edit.
 
 Discovery and module loading are cached: the plugin set is fixed at process
 start, so re-walking the tree and re-exec'ing plugin modules on every request is
@@ -30,7 +30,7 @@ def reset_cache() -> None:
 def discover_manifests() -> list[dict]:
     """Return every plugin manifest (with an injected `_dir`), sorted by kind/name.
 
-    Cached after the first walk — see module docstring."""
+    Cached after the first walk - see module docstring."""
     global _manifest_cache
     if _manifest_cache is not None:
         return _manifest_cache
@@ -52,7 +52,7 @@ def discover_manifests() -> list[dict]:
 
 
 def public_manifests() -> list[dict]:
-    """Manifests with internal fields stripped — safe to return over the API."""
+    """Manifests with internal fields stripped - safe to return over the API."""
     return [{k: v for k, v in m.items() if not k.startswith("_")} for m in discover_manifests()]
 
 
@@ -63,7 +63,7 @@ def get_manifest(name: str) -> dict | None:
 def load_plugin(name: str, config: dict):
     """Import <plugin>/plugin.py and instantiate its `Plugin` class with `config`.
 
-    The module is imported once and cached — a fresh `Plugin(config)` instance is
+    The module is imported once and cached - a fresh `Plugin(config)` instance is
     returned each call, but the module isn't re-exec'd on every request."""
     module = _module_cache.get(name)
     if module is None:

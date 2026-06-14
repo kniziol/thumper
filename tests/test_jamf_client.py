@@ -163,7 +163,7 @@ def test_smart_group_member_count():
 
 
 def test_smart_group_member_count_null_computers():
-    # Classic API JSON emits "computers": null (not []) for an empty group —
+    # Classic API JSON emits "computers": null (not []) for an empty group -
     # `.get("computers", [])` returns None there, so len() must be guarded.
     def handler(request):
         if request.url.path == "/api/oauth/token":
@@ -290,7 +290,7 @@ def test_policy_status_reports_scope():
 
 
 def test_policy_status_null_computer_groups():
-    # scope present but computer_groups null (empty-group edge) — must not crash.
+    # scope present but computer_groups null (empty-group edge) - must not crash.
     def handler(request):
         if request.url.path == "/api/oauth/token":
             return _token_ok(request)

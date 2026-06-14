@@ -99,12 +99,12 @@ export default function TripwireDetail() {
 
           <div className="step-label">Deploy this tripwire</div>
           <p className="muted" style={{ marginTop: 0 }}>
-            Run the command below on the machines you choose — paste it on a box, or push it
+            Run the command below on the machines you choose - paste it on a box, or push it
             via your MDM / SSH / Ansible. It's self-bootstrapping: it downloads the agent,
             self-enrolls, and starts watching. Each machine gets its <strong>own unique</strong>{" "}
             honeytoken instance + secret. <code>sudo</code> is required so the monitor can see
             file reads (macOS <code>fs_usage</code>). Your MDM decides which devices are in
-            scope — Thumper doesn't manage groups.
+            scope - Thumper doesn't manage groups.
           </p>
           <CopyField value={tw.install.command} />
           <div className="row" style={{ marginTop: 12 }}>
@@ -145,7 +145,7 @@ export default function TripwireDetail() {
                     <td className="path">{d.id}</td>
                     <td className="muted">{timeAgo(d.created_at)}</td>
                     <td className="muted">
-                      {d.last_triggered ? timeAgo(d.last_triggered) : "—"}
+                      {d.last_triggered ? timeAgo(d.last_triggered) : "-"}
                     </td>
                     <td><DeployBadge state={d.state} triggered={d.triggered_count} /></td>
                   </tr>
@@ -185,7 +185,7 @@ export default function TripwireDetail() {
             <h2>Delete tripwire</h2>
           </div>
           <p className="modal-intro">
-            This removes <strong>{tw.name}</strong> from all endpoints — the planted bait
+            This removes <strong>{tw.name}</strong> from all endpoints - the planted bait
             will be unplanted on the next agent sync. Alert history is preserved.
           </p>
           <div className="field">

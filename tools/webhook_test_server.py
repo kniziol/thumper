@@ -2,8 +2,8 @@
 """Standalone receiver for the Thumper generic webhook plugin.
 
 Verifies the replay-resistant timestamped signature (see plugins/alert/webhook),
-rejects stale or forged requests, and pretty-prints each event. Stdlib only — no
-dependency on the thumper package — so it can be dropped onto any box.
+rejects stale or forged requests, and pretty-prints each event. Stdlib only - no
+dependency on the thumper package - so it can be dropped onto any box.
 
 Usage:
     python tools/webhook_test_server.py --port 9000 --secret s3cr3t
@@ -82,7 +82,7 @@ def main():
     args = ap.parse_args()
 
     # Line-buffer stdout so each request prints live even when piped/redirected
-    # (block buffering would otherwise swallow output until exit — useless for a
+    # (block buffering would otherwise swallow output until exit - useless for a
     # receiver whose whole job is to show what it got).
     sys.stdout.reconfigure(line_buffering=True)
 

@@ -102,7 +102,7 @@ def test_second_agent_exits_without_enrolling(agent):
     result = agent["run"]()
 
     assert result.returncode == 0
-    assert "/api/enroll" not in _StubHandler.seen, "second agent enrolled — not a singleton"
+    assert "/api/enroll" not in _StubHandler.seen, "second agent enrolled - not a singleton"
     assert "already running" in (result.stdout + result.stderr).lower()
     # the live holder's lock is untouched
     assert (agent["lock_dir"] / "pid").read_text().strip() == str(holder)

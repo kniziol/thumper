@@ -145,7 +145,7 @@ export default function Integrations() {
         <p className="muted" style={{ marginTop: 0 }}>
           Plugins are auto-loaded from <span className="path">/plugins/deploy</span> and{" "}
           <span className="path">/plugins/alert</span>. Each renders its own config form from its
-          manifest — drop in a module to add Ansible, Splunk, PagerDuty, and more. See{" "}
+          manifest - drop in a module to add Ansible, Splunk, PagerDuty, and more. See{" "}
           <span className="path">docs/plugins.md</span>.
         </p>
         <Section
@@ -171,7 +171,7 @@ export default function Integrations() {
   );
 }
 
-// A representative alert event — mirrors the payload the server fans out to alert
+// A representative alert event - mirrors the payload the server fans out to alert
 // plugins (see services/alerting deliver_alert). Shown so users can build a
 // receiver against the real shape.
 const SAMPLE_ALERT = {
@@ -202,8 +202,8 @@ function ConfigModal({
   onSaved: () => void;
 }) {
   // Pre-fill non-secret fields from the saved config so editing shows the current
-  // values. Secrets stay blank (they're masked server-side) and — per the API's
-  // merge_config — a blank field is left untouched on save, so re-saving without
+  // values. Secrets stay blank (they're masked server-side) and - per the API's
+  // merge_config - a blank field is left untouched on save, so re-saving without
   // re-typing a secret keeps it.
   const [values, setValues] = useState<Record<string, string>>(() => {
     const init: Record<string, string> = {};
@@ -222,7 +222,7 @@ function ConfigModal({
   const missingRequired = manifest.config_schema.some((f) => f.required && !isSet(f));
 
   function generateSecret(key: string) {
-    // 256 bits of CSPRNG, base64url — a strong HMAC signing secret.
+    // 256 bits of CSPRNG, base64url - a strong HMAC signing secret.
     const bytes = new Uint8Array(32);
     crypto.getRandomValues(bytes);
     const secret = btoa(String.fromCharCode(...bytes))
@@ -239,7 +239,7 @@ function ConfigModal({
       setCopied(key);
       setTimeout(() => setCopied((c) => (c === key ? null : c)), 1500);
     } catch {
-      /* clipboard blocked (non-secure context) — leave the value visible to copy by hand */
+      /* clipboard blocked (non-secure context) - leave the value visible to copy by hand */
       setRevealed((r) => ({ ...r, [key]: true }));
     }
   }
@@ -274,7 +274,7 @@ function ConfigModal({
               </label>
               <input
                 type={f.type === "secret" && !revealed[f.key] ? "password" : "text"}
-                placeholder={secretKept ? "•••••• — leave blank to keep current" : f.placeholder}
+                placeholder={secretKept ? "•••••• - leave blank to keep current" : f.placeholder}
                 value={values[f.key] ?? ""}
                 onChange={(e) => setValues({ ...values, [f.key]: e.target.value })}
               />
@@ -314,7 +314,7 @@ function ConfigModal({
             </label>
             <pre className="code-block">{JSON.stringify(SAMPLE_ALERT, null, 2)}</pre>
             <div className="help">
-              The event every alert integration receives when a tripwire fires — the
+              The event every alert integration receives when a tripwire fires - the
               webhook delivers exactly this as the POST body (HMAC-signed when a
               signing secret is set).
             </div>

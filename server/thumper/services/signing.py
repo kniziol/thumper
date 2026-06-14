@@ -6,7 +6,7 @@ with it and the server verifies. The secret never appears in the planted bait
 file, so an attacker who finds the token (and the callback URL) still cannot
 forge a trigger.
 
-Signature is computed over the EXACT request body bytes — no canonicalization,
+Signature is computed over the EXACT request body bytes - no canonicalization,
 no room for an encoding mismatch between agent and server.
 """
 import hashlib
@@ -29,7 +29,7 @@ def _signed_material(ts: int, body: bytes) -> bytes:
     """The bytes covered by a timestamped signature: "<ts>." then the raw body.
     Binding the timestamp in is what makes a captured payload non-replayable.
     `ts` is an integer unix-seconds and `body` is JSON (always starts with `{`),
-    so the "<ts>." prefix is unambiguous — no (ts, body) pair can collide."""
+    so the "<ts>." prefix is unambiguous - no (ts, body) pair can collide."""
     return f"{ts}.".encode() + body
 
 
@@ -49,8 +49,8 @@ def verify_timestamped(secret: str, ts: int, body: bytes, signature: str | None,
     symmetric window would let an attacker mint a future-dated `ts` and stretch
     the effective replay window to `max_age + max_skew` past that future instant.
     Capping forward skew keeps the worst-case acceptance at ~`max_age`."""
-    if ts > now + max_skew:   # too far in the future — drift cap
+    if ts > now + max_skew:   # too far in the future - drift cap
         return False
-    if now - ts > max_age:    # too old — stale replay
+    if now - ts > max_age:    # too old - stale replay
         return False
     return verify(secret, _signed_material(ts, body), signature)

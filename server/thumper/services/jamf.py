@@ -161,7 +161,7 @@ class JamfClient:
         if resp.status_code != 200:
             raise JamfError(f"Jamf group read failed: {resp.status_code} {resp.text[:200]}")
         # Classic API JSON serializes an empty group as "computers": null (not []),
-        # and `.get(default)` only fills a MISSING key — so coerce null → [].
+        # and `.get(default)` only fills a MISSING key - so coerce null → [].
         group = self._dig(self._json(resp, "Jamf group read"), "computer_group",
                           label="Jamf group read")
         return len(group.get("computers") or [])

@@ -5,8 +5,8 @@ server, so they exercise the actual curl-based fetch+write path.
 
 Policy under test (issue #29): planting must NEVER overwrite a pre-existing file
 the agent did not plant itself (a likely-real credential). And if ANY target
-path is occupied, the WHOLE install aborts — nothing is planted and the agent
-does not start watching — rather than skipping one file and continuing.
+path is occupied, the WHOLE install aborts - nothing is planted and the agent
+does not start watching - rather than skipping one file and continuing.
 """
 
 import http.server
@@ -107,7 +107,7 @@ def agent(tmp_path):
 def test_aborts_before_enrolling_when_a_path_is_occupied(agent):
     """If one path holds a real file, the whole install aborts BEFORE enrolling:
     the real file survives, the other (free) path is left unplanted, the agent
-    exits non-zero — and crucially it never hits /api/enroll, so no endpoint
+    exits non-zero - and crucially it never hits /api/enroll, so no endpoint
     appears in the dashboard (issue #29)."""
     configure, run = agent
     occupied, free = configure("real_creds", "free_path")
@@ -120,7 +120,7 @@ def test_aborts_before_enrolling_when_a_path_is_occupied(agent):
     assert not Path(free).exists(), "free path planted despite the abort"
     assert "abort" in result.stderr.lower()
     assert "/api/enroll" not in _StubHandler.seen, (
-        "the agent enrolled despite aborting — a ghost endpoint would appear"
+        "the agent enrolled despite aborting - a ghost endpoint would appear"
     )
 
 

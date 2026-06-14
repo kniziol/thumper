@@ -1,6 +1,6 @@
 """Agent live sync (SP2 of #34): a running agent re-pulls /api/agent/deployments
-on --sync-interval and reconciles — plants newly-added bait, removes dropped
-bait — without a restart.
+on --sync-interval and reconciles - plants newly-added bait, removes dropped
+bait - without a restart.
 
 Driven against a stub whose deployment set changes between pulls. The sync loop
 runs independently of the watcher, so the test is deterministic regardless of
@@ -53,7 +53,7 @@ class _StubHandler(http.server.BaseHTTPRequestHandler):
         _StubHandler.seen.append(self.path)
         if self.path == "/api/agent/deployments":
             # Enforce the bearer token so a "DB reset" (rotated token) makes stale
-            # pulls 401 until the agent re-enrolls — exercises the resync path.
+            # pulls 401 until the agent re-enrolls - exercises the resync path.
             if self.headers.get("Authorization") != f"Bearer {_StubHandler.valid_token}":
                 self.send_response(401)
                 self.end_headers()
@@ -149,7 +149,7 @@ def test_live_sync_plants_added_and_removes_dropped(agent):
 
 def test_reconcile_never_deletes_a_file_it_did_not_plant(agent):
     """Un-assigning a tripwire must NEVER delete a real credential sitting at that
-    path — reconcile may only remove bait WE planted (issue #29 invariant). A
+    path - reconcile may only remove bait WE planted (issue #29 invariant). A
     sentinel bait we *did* plant gates the timing of each reconcile pass."""
     keep = agent["keep"]
     tmp = Path(keep).parent
@@ -259,14 +259,14 @@ def test_replant_is_bounded(agent):
     assert _wait_until(lambda: _StubHandler.seen.count("/content/dep_bad") >= 4, timeout=20), \
         "bad dep was not re-planted up to the cap"
     stable = _StubHandler.seen.count("/content/dep_bad")
-    time.sleep(3)   # several more cycles — must NOT keep growing
+    time.sleep(3)   # several more cycles - must NOT keep growing
     final = _StubHandler.seen.count("/content/dep_bad")
     assert final == stable == 4, f"re-plant not bounded at the cap: stable={stable} final={final}"
 
 
 def test_verify_does_not_write_through_a_symlink(agent):
     """Tamper guard: if the bait path becomes a (dangling) symlink, verify must NOT
-    treat it as missing and re-plant through it — curl -o would write the target."""
+    treat it as missing and re-plant through it - curl -o would write the target."""
     import os
     import time
     keep = agent["keep"]

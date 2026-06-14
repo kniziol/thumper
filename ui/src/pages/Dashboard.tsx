@@ -84,26 +84,26 @@ export default function Dashboard() {
         {alerts.length > 0 && (
           <div className="banner">
             ⚠ <strong>{new Set(alerts.map((a) => a.endpoint_id)).size} endpoint(s) may be
-            compromised.</strong> A planted honeytoken was read — this almost always means a
+            compromised.</strong> A planted honeytoken was read - this almost always means a
             process is harvesting credentials.
           </div>
         )}
 
         <div className="stat-grid">
           <div className="stat">
-            <div className="stat-val">{stats?.tripwires ?? "—"}</div>
+            <div className="stat-val">{stats?.tripwires ?? "-"}</div>
             <div className="stat-label">Tripwires</div>
           </div>
           <div className="stat">
-            <div className="stat-val">{stats?.endpoints ?? "—"}</div>
+            <div className="stat-val">{stats?.endpoints ?? "-"}</div>
             <div className="stat-label">Endpoints enrolled</div>
           </div>
           <div className="stat alert">
-            <div className="stat-val">{stats?.alerts_24h ?? "—"}</div>
+            <div className="stat-val">{stats?.alerts_24h ?? "-"}</div>
             <div className="stat-label">Alerts (24h)</div>
           </div>
           <div className="stat alert">
-            <div className="stat-val">{stats?.active_triggers ?? "—"}</div>
+            <div className="stat-val">{stats?.active_triggers ?? "-"}</div>
             <div className="stat-label">Triggered instances</div>
           </div>
         </div>
@@ -134,7 +134,7 @@ export default function Dashboard() {
                     <td>
                       <Link to={`/endpoints/${a.endpoint_id}`}>{a.endpoint_hostname}</Link>
                     </td>
-                    <td>{a.os_user ?? "—"}</td>
+                    <td>{a.os_user ?? "-"}</td>
                     <td className="path">
                       {a.process ?? "unknown"}
                       {a.pid ? ` (${a.pid})` : ""}
@@ -143,7 +143,7 @@ export default function Dashboard() {
                       <Link to={`/tripwires/${a.tripwire_id}`}>{a.tripwire_name}</Link>{" "}
                       <TypeTag type={a.token_type} />
                     </td>
-                    <td className="path">{a.accessed_path ?? "—"}</td>
+                    <td className="path">{a.accessed_path ?? "-"}</td>
                   </tr>
                 ))}
               </tbody>

@@ -1,4 +1,4 @@
-"""Honeytoken generators — fake but realistic credential file bodies.
+"""Honeytoken generators - fake but realistic credential file bodies.
 
 The trick: each output is correct in *shape* (real prefixes like ``AKIA``,
 ``github_pat_``, the ``eyJ`` JWT header; correct file format) so a scanner
@@ -8,7 +8,7 @@ fires.
 
 This is the Python port of the original ui/src/api/mock.ts generators. Token
 generation lives on the SERVER (not the browser) because creating a tripwire
-also mints a per-token HMAC secret and callback binding — security-relevant work
+also mints a per-token HMAC secret and callback binding - security-relevant work
 the client must not do.
 """
 import json

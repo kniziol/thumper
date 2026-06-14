@@ -16,7 +16,7 @@ def _install_command(tripwire_ids: list[str]) -> str:
     # THEN `sudo sh <file>` (not `curl | sudo sh`) so sudo keeps the terminal for
     # its password prompt. sudo because macOS fs_usage read-detection needs root.
     # The install token gates /api/install.sh (it embeds the enroll token), so we
-    # pass it here — this command is generated server-side, never exposed publicly.
+    # pass it here - this command is generated server-side, never exposed publicly.
     # One `tripwire=` param per tripwire; the agent enrolls for the whole set and
     # a single watcher plants/monitors them all.
     qs = "".join(f"tripwire={tid}&" for tid in tripwire_ids)

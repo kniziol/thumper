@@ -1,4 +1,4 @@
-"""Pydantic API schemas. These mirror ui/src/api/types.ts — keep them in sync;
+"""Pydantic API schemas. These mirror ui/src/api/types.ts - keep them in sync;
 this is the contract between the UI and the server.
 """
 from datetime import datetime, timezone
@@ -172,4 +172,4 @@ class TokenPreviewOut(BaseModel):
 
 # Agent-facing endpoints (/enroll, /agent/*, /trigger) speak a plain-text
 # protocol (key=value / tab-separated), not JSON, so the Bash agent needs no
-# JSON parser — see api/routes.py. They therefore have no Pydantic schemas here.
+# JSON parser - see api/routes.py. They therefore have no Pydantic schemas here.

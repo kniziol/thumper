@@ -18,7 +18,7 @@ export default function NotFound() {
     >
       <img src="/thumper_gif.gif" alt="Thumper" style={{ width: 180, height: "auto" }} />
       <h1 style={{ margin: 0, fontSize: "2.25rem", letterSpacing: ".12em" }}>
-        404 — Not Found
+        404 - Not Found
       </h1>
       <Link to="/" style={{ color: "#7c9cff", textDecoration: "none" }}>
         ← back to Thumper

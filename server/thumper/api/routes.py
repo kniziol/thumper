@@ -2,7 +2,7 @@
 
 Two distinct contracts live here:
   • UI-facing endpoints (/stats, /tripwires, /endpoints, /alerts, …) speak JSON
-    and mirror ui/src/api/types.ts — that's the contract the UI is built against.
+    and mirror ui/src/api/types.ts - that's the contract the UI is built against.
   • Agent-facing endpoints (/enroll, /agent/*, /trigger) speak a plain-text,
     line-based protocol so the endpoint agent can be pure Bash (curl + openssl,
     no JSON parser). See docs/architecture.md.
@@ -192,7 +192,7 @@ def get_tripwire(tid: str, db: Session = Depends(get_db)):
 @router.patch("/tripwires/{tid}", response_model=TripwireOut)
 def update_tripwire(tid: str, body: UpdateTripwireIn,
                     db: Session = Depends(get_db)):
-    """Rename a tripwire. (Path/type/content are immutable — delete + recreate to
+    """Rename a tripwire. (Path/type/content are immutable - delete + recreate to
     change those, so live bait never silently diverges from the definition.)"""
     name = body.name.strip()
     if not name:
@@ -371,7 +371,7 @@ def test_integration(plugin: str, db: Session = Depends(get_db)):
         raise HTTPException(400, "integration is not configured")
     try:
         load_plugin(plugin, cfg).test()
-    except Exception as exc:  # noqa: BLE001 — surface any failure as a test result
+    except Exception as exc:  # noqa: BLE001 - surface any failure as a test result
         error = str(exc)[:500] or exc.__class__.__name__
         store.set_integration_test_result(db, plugin=plugin, status="failed", error=error)
         return IntegrationTestResult(ok=False, error=error, tested_at=iso_now())
@@ -423,7 +423,7 @@ def install_script(tripwire: list[str] = Query(default=[]), token: str = Query(d
     into `sudo sh`: it downloads the Bash agent and starts it watching as root
     (so fs_usage works). Distribute it via MDM/SSH or paste it on the endpoint.
 
-    The script embeds ENROLL_TOKEN, so it is gated behind INSTALL_TOKEN — only
+    The script embeds ENROLL_TOKEN, so it is gated behind INSTALL_TOKEN - only
     the server-generated deploy command (which carries the token) can fetch it.
     """
     if token != INSTALL_TOKEN:
@@ -453,7 +453,7 @@ echo "thumper: agent installed in $DIR and watching (logs: $DIR/agent.log)"
 # ── agent: pre-enroll bait-path preview ──────────────────────────────────────
 # The bait path is a property of the tripwire, so the agent can learn its paths
 # WITHOUT enrolling. It uses this to abort an install on a path conflict BEFORE
-# registering — so a refused install leaves no endpoint in the dashboard. Returns
+# registering - so a refused install leaves no endpoint in the dashboard. Returns
 # the paths one-per-line and creates nothing; gated by the enroll token like
 # /enroll. (The agent still gets its UNIQUE content/secret only after enroll.)
 @router.post("/agent/tripwire-paths", response_class=PlainTextResponse)
@@ -519,7 +519,7 @@ def agent_heartbeat(authorization: str = Header(default=""),
 
 # ── agent: pull deployments ──────────────────────────────────────────────────
 # One tab-separated record per deployment. Bait `content` is NOT inlined (it can
-# be multi-line) — the agent fetches it raw from the per-deployment content URL.
+# be multi-line) - the agent fetches it raw from the per-deployment content URL.
 @router.get("/agent/deployments", response_class=PlainTextResponse)
 def agent_deployments(authorization: str = Header(default=""),
                       db: Session = Depends(get_db)):
@@ -583,7 +583,7 @@ async def trigger(request: Request, background: BackgroundTasks,
 
     deployment = store.get_deployment(db, data.get("deployment_id", ""))
     signature = request.headers.get("X-Thumper-Signature")
-    # Same 401 for unknown deployment and bad signature — don't leak which exist.
+    # Same 401 for unknown deployment and bad signature - don't leak which exist.
     # verify() signs the EXACT body bytes, so the text format needs no agreement
     # beyond "the agent and server hash the same bytes".
     if deployment is None or not verify(deployment.hmac_secret, body, signature):

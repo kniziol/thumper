@@ -1,7 +1,7 @@
 [project]
 name = "thumper"
 version = "0.1.0"
-description = "Detect endpoint compromise with honeytoken tripwires — plant fake credentials where the Shai-Hulud npm worm scans, alert on read."
+description = "Detect endpoint compromise with honeytoken tripwires - plant fake credentials where the Shai-Hulud npm worm scans, alert on read."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "Apache-2.0" }
@@ -16,7 +16,7 @@ dependencies = [
 
 [project.optional-dependencies]
 # The endpoint agent is a standalone Bash script (agent/thumper_agent.sh) using
-# only curl + openssl — it has no Python dependencies of its own.
+# only curl + openssl - it has no Python dependencies of its own.
 postgres = ["psycopg[binary]>=3.1"]
 mysql = ["pymysql>=1.1"]
 dev = ["pytest>=8.0"]

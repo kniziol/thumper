@@ -7,7 +7,7 @@
   --text: #e6e9f0;
   --text-dim: #8b94a8;
   --text-faint: #5a6377;
-  --accent: #e8a13a;     /* desert amber — the "thump" */
+  --accent: #e8a13a;     /* desert amber - the "thump" */
   --accent-dim: #7a5618;
   --accent-glow: rgba(232, 161, 58, 0.4);
   --danger: #ff5d5d;
@@ -23,7 +23,7 @@
 html, body, #root { height: 100%; margin: 0; }
 body {
   background: var(--bg);
-  /* faint amber glow top-right, cool depth bottom-left — subtle desert haze */
+  /* faint amber glow top-right, cool depth bottom-left - subtle desert haze */
   background-image:
     radial-gradient(900px 600px at 100% -10%, rgba(232, 161, 58, 0.06), transparent 60%),
     radial-gradient(700px 500px at -10% 110%, rgba(70, 90, 140, 0.05), transparent 60%);

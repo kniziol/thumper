@@ -28,13 +28,13 @@ def route_alert(db: Session, event: dict) -> None:
             plugin = load_plugin(plugin_name, json.loads(integration.config_json))
             plugin.alert(event)
             status, error = "ok", None
-        except Exception as exc:  # noqa: BLE001 — best-effort fan-out
+        except Exception as exc:  # noqa: BLE001 - best-effort fan-out
             log.warning("alert plugin %s failed: %s", plugin_name, exc)
             status, error = "failed", str(exc)
         try:
             store.record_delivery(db, alert_id=alert_id, plugin=plugin_name,
                                   status=status, error=error)
-        except Exception:  # noqa: BLE001 — recording must not break fan-out
+        except Exception:  # noqa: BLE001 - recording must not break fan-out
             db.rollback()
             log.exception("failed to record delivery for plugin %s", plugin_name)
 
@@ -44,7 +44,7 @@ def deliver_alert(event: dict) -> None:
     db = SessionLocal()
     try:
         route_alert(db, event)
-    except Exception:  # noqa: BLE001 — never let the background task raise
+    except Exception:  # noqa: BLE001 - never let the background task raise
         log.exception("deliver_alert failed for alert %s", event.get("alert_id"))
     finally:
         db.close()
