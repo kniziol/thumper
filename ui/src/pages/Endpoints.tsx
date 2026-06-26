@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { api } from "../api";
 import type { Endpoint } from "../api";
-import { EndpointBadge, Topbar, timeAgo } from "../components/ui.tsx";
+import { api } from "../api";
+import { EndpointBadge, timeAgo, Topbar } from "../components/ui.tsx";
+import PageTitle from "../components/PageTitle.tsx";
 
 export default function Endpoints() {
   const [endpoints, setEndpoints] = useState<Endpoint[]>([]);
   const nav = useNavigate();
+  const PAGE_TITLE = "Endpoints";
 
   useEffect(() => {
     api.listEndpoints().then(setEndpoints);
@@ -14,10 +16,11 @@ export default function Endpoints() {
 
   return (
     <>
+      <PageTitle title={PAGE_TITLE} />
       <Topbar title="Endpoints" />
       <div className="content">
         <div className="card">
-          <p className="muted" style={{ marginTop: 0 }}>
+          <p className="muted" style={{marginTop: 0}}>
             Machines that have enrolled by running a tripwire's install command. Each holds its
             own unique honeytoken instances and reports reads via the on-box monitor.
           </p>
@@ -28,30 +31,30 @@ export default function Endpoints() {
           ) : (
             <table>
               <thead>
-                <tr>
-                  <th>Hostname</th>
-                  <th>Platform</th>
-                  <th>Enrolled</th>
-                  <th>Last seen</th>
-                  <th>Tripwires</th>
-                  <th>Triggers</th>
-                  <th>Status</th>
-                </tr>
+              <tr>
+                <th>Hostname</th>
+                <th>Platform</th>
+                <th>Enrolled</th>
+                <th>Last seen</th>
+                <th>Tripwires</th>
+                <th>Triggers</th>
+                <th>Status</th>
+              </tr>
               </thead>
               <tbody>
-                {endpoints.map((e) => (
-                  <tr key={e.id} className="clickable-row" onClick={() => nav(`/endpoints/${e.id}`)}>
-                    <td>{e.hostname}</td>
-                    <td className="muted">{e.platform ?? "-"}</td>
-                    <td className="muted">{timeAgo(e.enrolled_at)}</td>
-                    <td className="muted">{e.last_seen ? timeAgo(e.last_seen) : "-"}</td>
-                    <td>{e.deployment_count}</td>
-                    <td className={e.triggered_count > 0 ? "danger-text" : ""}>
-                      {e.triggered_count}
-                    </td>
-                    <td><EndpointBadge status={e.status} /></td>
-                  </tr>
-                ))}
+              {endpoints.map((e) => (
+                <tr key={e.id} className="clickable-row" onClick={() => nav(`/endpoints/${e.id}`)}>
+                  <td>{e.hostname}</td>
+                  <td className="muted">{e.platform ?? "-"}</td>
+                  <td className="muted">{timeAgo(e.enrolled_at)}</td>
+                  <td className="muted">{e.last_seen ? timeAgo(e.last_seen) : "-"}</td>
+                  <td>{e.deployment_count}</td>
+                  <td className={e.triggered_count > 0 ? "danger-text" : ""}>
+                    {e.triggered_count}
+                  </td>
+                  <td><EndpointBadge status={e.status} /></td>
+                </tr>
+              ))}
               </tbody>
             </table>
           )}
